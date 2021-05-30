@@ -3,8 +3,10 @@ package pl.edu.pb.wi.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import pl.edu.pb.wi.model.db.Event;
+import pl.edu.pb.wi.model.db.Rating;
 import pl.edu.pb.wi.service.EventService;
 import pl.edu.pb.wi.service.PDFCreator;
+import pl.edu.pb.wi.service.RatingService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +19,9 @@ public class EventResource {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private PDFCreator pdfCreator;
@@ -101,5 +106,42 @@ public class EventResource {
         Response.ResponseBuilder response = Response.ok(pdf, MediaType.APPLICATION_OCTET_STREAM);
         response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", pdf.getName()));
         return response.build();
+    }
+
+    @GET
+    @Path("/{eventId}/ratings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEventRatings(@PathParam("eventId") String eventId) {
+        Event event = eventService.getById(eventId);
+        if (event == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        List<Rating> ratings = ratingService.getRatingsByEconst(event.getEconst());
+        return Response.status(HttpStatus.OK.value())
+                .entity(ratings)
+                .build();
+    }
+
+    @POST
+    @Path("/{eventId}/rating")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createEventRating(@PathParam("eventId") String eventId,
+                                            @HeaderParam("userId") String userId,
+                                            Rating rating) {
+        Event event = eventService.getById(eventId);
+        if (event == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", event.getEconst()))
+                    .build();
+        }
+        rating.setUserId(userId);
+        rating.setEventId(event.getEconst());
+        Rating created = ratingService.createRating(rating);
+        return Response.status(HttpStatus.OK.value())
+                .entity(created)
+                .build();
     }
 }

@@ -20,6 +20,9 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
+        if (requestContext.getUriInfo().getPath().equals("user/register")) { //filtr nie jest wymagany przy rejestracji
+            return;
+        }
         final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
             // Authorization: Basic base64credentials
@@ -38,7 +41,12 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
             } else {
                 requestContext.getHeaders().add("userId", user.getUconst());
             }
-        } //TODO kazdy request powinien przechodzic przez ten filtr
+        } else {
+            requestContext.abortWith(
+                    Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Brak authoryzacji")
+                            .build());
+        }
 
     }
 }

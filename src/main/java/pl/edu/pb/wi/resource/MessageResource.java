@@ -2,7 +2,7 @@ package pl.edu.pb.wi.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.pb.wi.model.Message;
-import pl.edu.pb.wi.resource.subresource.MessageCommentsResource;
+import pl.edu.pb.wi.resource.sub.MessageCommentsResource;
 import pl.edu.pb.wi.service.impl.MessageService;
 
 import javax.inject.Singleton;

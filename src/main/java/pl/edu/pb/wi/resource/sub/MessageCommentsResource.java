@@ -1,4 +1,4 @@
-package pl.edu.pb.wi.resource.subresource;
+package pl.edu.pb.wi.resource.sub;
 
 import pl.edu.pb.wi.model.Comment;
 import pl.edu.pb.wi.service.impl.MessageService;
