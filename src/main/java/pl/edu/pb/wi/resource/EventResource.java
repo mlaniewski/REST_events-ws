@@ -9,8 +9,10 @@ import pl.edu.pb.wi.service.PDFCreator;
 import pl.edu.pb.wi.service.RatingService;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.io.File;
 import java.util.List;
 
@@ -36,13 +38,29 @@ public class EventResource {
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@PathParam("eventId") String eventId) {
+    public Response getById(@PathParam("eventId") String eventId,
+                            @Context UriInfo uriInfo) {
         Event event = eventService.getById(eventId);
         if (event == null) {
             return Response.status(HttpStatus.NOT_FOUND.value())
                     .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
                     .build();
         }
+
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class)
+                .path(String.valueOf(event.getEconst()))
+                .build()
+                .toString();
+        event.addLink(uri, "self");
+
+        String uri2 = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class, "getEventRatings")
+                .resolveTemplate("eventId", event.getEconst())
+                .build()
+                .toString();
+        event.addLink(uri2, "ratings");
+
         return Response.status(HttpStatus.OK.value())
                 .entity(event)
                 .build();
@@ -59,13 +77,30 @@ public class EventResource {
     @Path("/{eventId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEvent(@PathParam("eventId") String eventId, Event event) {
+    public Response updateEvent(@PathParam("eventId") String eventId,
+                                Event event,
+                                @Context UriInfo uriInfo) {
         Event updated = eventService.update(eventId, event);
         if (updated == null) {
             return Response.status(HttpStatus.NOT_FOUND.value())
                     .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
                     .build();
         }
+
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class)
+                .path(String.valueOf(event.getEconst()))
+                .build()
+                .toString();
+        event.addLink(uri, "self");
+
+        String uri2 = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class, "getEventRatings")
+                .resolveTemplate("eventId", event.getEconst())
+                .build()
+                .toString();
+        event.addLink(uri2, "ratings");
+
         return Response.status(HttpStatus.OK.value())
                 .entity(event)
                 .build();

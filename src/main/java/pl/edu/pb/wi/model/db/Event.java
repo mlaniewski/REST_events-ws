@@ -3,9 +3,13 @@ package pl.edu.pb.wi.model.db;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.edu.pb.wi.model.Link;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "Event")
 public class Event {
@@ -33,6 +37,8 @@ public class Event {
     private int month;
     private int year;
     private String description;
+    @Transient
+    private List<Link> links = new ArrayList<>();
 
     public Event() {
     }
@@ -119,5 +125,17 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void addLink(String uri, String rel) {
+        links.add(new Link(uri, rel));
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 }
