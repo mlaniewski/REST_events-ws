@@ -6,8 +6,11 @@ import pl.edu.pb.wi.model.db.Event;
 import pl.edu.pb.wi.repository.EventRepository;
 import pl.edu.pb.wi.service.EventService;
 
-import java.util.Date;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EventServiceImpl implements EventService {
@@ -61,7 +64,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getEventsByDate(Date date) {
-        return eventRepository.findByDate(date);
+    public List<Event> getEventsByDate(String dateStr) {
+        try {
+            XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateStr);
+            List<Event> events = eventRepository.findByMonthAndYear(date.getMonth(), date.getYear());
+            return events.stream()
+                    .filter(event -> event.getDate().getDay() == date.getDay())
+                    .collect(Collectors.toList());
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

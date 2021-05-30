@@ -10,7 +10,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 @Path("/event")
@@ -71,22 +70,21 @@ public class EventResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getEventsByWeekOrDate(@QueryParam("week") Integer week,
-                                             @QueryParam("date") Date date) {//TODO Date jako string
+                                             @QueryParam("date") String dateStr) {
         if (week != null) {
             return eventService.getEventsByWeek(week);
         }
-        return eventService.getEventsByDate(date);
+        return eventService.getEventsByDate(dateStr);
     }
 
     @GET
     @Path("/to-pdf")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public File generateEventsListPDF() {
+    public Response generateEventsListPDF() {
         List<Event> eventList = eventService.getAll();
         File pdf = pdfCreator.create(eventList);
-        //FileDataSource fileDataSource = new FileDataSource(pdf);
-        //DataHandler dataHandler = new DataHandler(fileDataSource);
-        //TODO to nie dziala
-        return pdf;
+        Response.ResponseBuilder response = Response.ok(pdf, MediaType.APPLICATION_OCTET_STREAM);
+        response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", pdf.getName()));
+        return response.build();
     }
 }

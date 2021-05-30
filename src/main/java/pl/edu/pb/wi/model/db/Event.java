@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 @Document(collection = "Event")
 public class Event {
@@ -28,7 +28,7 @@ public class Event {
     private String econst;
     private String name;
     private Type type;
-    private Date date;
+    private XMLGregorianCalendar date;
     private int week;
     private int month;
     private int year;
@@ -37,7 +37,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String econst, String name, Type type, Date date, int week, int month, int year, String description) {
+    public Event(String econst, String name, Type type, XMLGregorianCalendar date, int week, int month, int year, String description) {
         this._id = new ObjectId();
         this.econst = econst;
         this.name = name;
@@ -81,11 +81,11 @@ public class Event {
         this.type = type;
     }
 
-    public Date getDate() {
+    public XMLGregorianCalendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(XMLGregorianCalendar date) {
         this.date = date;
     }
 

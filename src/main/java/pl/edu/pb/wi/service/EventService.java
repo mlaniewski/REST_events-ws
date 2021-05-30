@@ -2,7 +2,6 @@ package pl.edu.pb.wi.service;
 
 import pl.edu.pb.wi.model.db.Event;
 
-import java.util.Date;
 import java.util.List;
 
 public interface EventService {
@@ -18,5 +17,5 @@ public interface EventService {
 
     List<Event> getEventsByWeek(Integer week);
 
-    List<Event> getEventsByDate(Date date);
+    List<Event> getEventsByDate(String dateStr);
 }
