@@ -38,7 +38,7 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
             } else {
                 requestContext.getHeaders().add("userId", user.getUconst());
             }
-        }
+        } //TODO kazdy request powinien przechodzic przez ten filtr
 
     }
 }

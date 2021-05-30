@@ -28,18 +28,25 @@ public class EventResource {
         return eventService.getAll();
     }
 
-    //TODO NOT FOUND zaimplemetowac
     @GET
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Event getById(@PathParam("eventId") String eventId) {
-        return eventService.getById(eventId);
+    public Response getById(@PathParam("eventId") String eventId) {
+        Event event = eventService.getById(eventId);
+        if (event == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        return Response.status(HttpStatus.OK.value())
+                .entity(event)
+                .build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Event createEvent(Event event) {//TODO event.date jako string
+    public Event createEvent(Event event) {
         return eventService.create(event);
     }
 
@@ -47,8 +54,16 @@ public class EventResource {
     @Path("/{eventId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Event updateEvent(@PathParam("eventId") String eventId, Event event) {
-        return eventService.update(eventId, event);
+    public Response updateEvent(@PathParam("eventId") String eventId, Event event) {
+        Event updated = eventService.update(eventId, event);
+        if (updated == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        return Response.status(HttpStatus.OK.value())
+                .entity(event)
+                .build();
     }
 
     @DELETE
