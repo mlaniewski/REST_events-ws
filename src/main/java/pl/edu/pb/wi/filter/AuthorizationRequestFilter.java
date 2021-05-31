@@ -8,6 +8,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -20,7 +21,9 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        if (requestContext.getUriInfo().getPath().equals("user/register")) { //filtr nie jest wymagany przy rejestracji
+        UriInfo uriInfo = requestContext.getUriInfo();
+        if (uriInfo.getPath().equals("user/register") ||
+                uriInfo.getPath().equals("event/all")) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow
             return;
         }
         final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
