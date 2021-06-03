@@ -23,7 +23,8 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         UriInfo uriInfo = requestContext.getUriInfo();
         if (uriInfo.getPath().equals("user/register") ||
-                uriInfo.getPath().equals("event/all")) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow
+                uriInfo.getPath().equals("event/all") ||
+                uriInfo.getPath().equals("event")) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow i przy filtrach
             return;
         }
         final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);

@@ -11,9 +11,7 @@ public class Rating {
     @BsonProperty(value = "_id")
     private ObjectId _id;
     private Double rating;
-    @BsonProperty(value = "user_id")
     private String userId;
-    @BsonProperty(value = "event_id")
     private String eventId;
 
     public Rating() {

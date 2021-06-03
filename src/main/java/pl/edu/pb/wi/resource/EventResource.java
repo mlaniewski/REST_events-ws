@@ -169,14 +169,36 @@ public class EventResource {
         Event event = eventService.getById(eventId);
         if (event == null) {
             return Response.status(HttpStatus.NOT_FOUND.value())
-                    .entity(String.format("Event('%s') nie zostal znaleziony", event.getEconst()))
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
                     .build();
         }
         rating.setUserId(userId);
         rating.setEventId(event.getEconst());
         Rating created = ratingService.createRating(rating);
+        if (created == null) {
+            return Response.status(HttpStatus.CONFLICT.value())
+                    .build();
+        }
         return Response.status(HttpStatus.OK.value())
                 .entity(created)
+                .build();
+    }
+
+
+    @GET
+    @Path("/{eventId}/rating")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAvgRating(@PathParam("eventId") String eventId) {
+        Event event = eventService.getById(eventId);
+        if (event == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        Double avgRating = ratingService.getAvgRating(eventId);
+        return Response.status(HttpStatus.OK.value())
+                .entity(avgRating)
                 .build();
     }
 }

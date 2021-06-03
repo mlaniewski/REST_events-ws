@@ -7,8 +7,8 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.edu.pb.wi.model.Link;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "Event")
@@ -32,7 +32,7 @@ public class Event {
     private String econst;
     private String name;
     private Type type;
-    private XMLGregorianCalendar date;
+    private Date date;
     private int week;
     private int month;
     private int year;
@@ -43,7 +43,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String econst, String name, Type type, XMLGregorianCalendar date, int week, int month, int year, String description) {
+    public Event(String econst, String name, Type type, Date date, int week, int month, int year, String description) {
         this._id = new ObjectId();
         this.econst = econst;
         this.name = name;
@@ -87,11 +87,11 @@ public class Event {
         this.type = type;
     }
 
-    public XMLGregorianCalendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(XMLGregorianCalendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

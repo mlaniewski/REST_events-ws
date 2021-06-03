@@ -6,11 +6,10 @@ import pl.edu.pb.wi.model.db.Event;
 import pl.edu.pb.wi.repository.EventRepository;
 import pl.edu.pb.wi.service.EventService;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class EventServiceImpl implements EventService {
@@ -65,13 +64,14 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByDate(String dateStr) {
+        Date date;
         try {
-            XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateStr);
-            List<Event> events = eventRepository.findByMonthAndYear(date.getMonth(), date.getYear());
-            return events.stream()
-                    .filter(event -> event.getDate().getDay() == date.getDay())
-                    .collect(Collectors.toList());
-        } catch (DatatypeConfigurationException e) {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            Date midnight = new Date(date.getTime());
+            Date nextMidnight = new Date(date.getTime() + 24*60*60*1000 - 1);
+            List<Event> events = eventRepository.findByDateBetween(midnight, nextMidnight);
+            return events;
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;

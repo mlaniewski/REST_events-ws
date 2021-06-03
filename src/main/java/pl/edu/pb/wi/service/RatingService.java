@@ -8,4 +8,6 @@ public interface RatingService {
     List<Rating> getRatingsByEconst(String econst);
 
     Rating createRating(Rating rating);
+
+    Double getAvgRating(String eventId);
 }
