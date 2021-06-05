@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.pb.wi.model.db.User;
 import pl.edu.pb.wi.service.impl.AuthorizationServiceImpl;
 
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
@@ -24,7 +25,8 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         UriInfo uriInfo = requestContext.getUriInfo();
         if (uriInfo.getPath().equals("user/register") ||
                 uriInfo.getPath().equals("event/all") ||
-                uriInfo.getPath().equals("event")) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow i przy filtrach
+                uriInfo.getPath().equals("event") ||
+                (uriInfo.getPath().matches("event/.+/rating") && requestContext.getMethod().equals(HttpMethod.GET))) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow i przy filtrach
             return;
         }
         final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
