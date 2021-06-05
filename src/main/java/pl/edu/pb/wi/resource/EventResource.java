@@ -226,6 +226,10 @@ public class EventResource {
                     .build();
         }
         Double rating = ratingService.getUserRating(eventId, userId);
+        if (rating == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .build();
+        }
         return Response.status(HttpStatus.OK.value())
                 .entity(rating)
                 .build();
