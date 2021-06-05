@@ -198,6 +198,10 @@ public class EventResource {
                     .build();
         }
         Double avgRating = ratingService.getAvgRating(eventId);
+        if (avgRating == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .build();
+        }
         return Response.status(HttpStatus.OK.value())
                 .entity(avgRating)
                 .build();
