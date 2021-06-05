@@ -85,6 +85,7 @@ public class PDFCreatorImpl implements PDFCreator {
     private void appendEvent(PdfPTable table, Event event) {
         PdfPCell cell;
         cell = new PdfPCell();
+        event.setDate(new Date(event.getDate().getTime() - 2*60*60*1000));
         cell.addElement(new Paragraph(event.getDate().toString()));
         table.addCell(cell);
         cell = new PdfPCell();
