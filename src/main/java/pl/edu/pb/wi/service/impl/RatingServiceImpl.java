@@ -32,7 +32,9 @@ public class RatingServiceImpl implements RatingService {
     public Rating createRating(Rating rating) {
         Optional<Rating> optionalRating = ratingRepository.findByUserIdAndEventId(rating.getUserId(), rating.getEventId());
         if (optionalRating.isPresent()) {
-            return null;
+            Rating found = optionalRating.get();
+            found.setRating(rating.getRating());
+            return ratingRepository.save(found);
         }
         return ratingRepository.save(rating);
     }

@@ -175,10 +175,6 @@ public class EventResource {
         rating.setUserId(userId);
         rating.setEventId(event.getEconst());
         Rating created = ratingService.createRating(rating);
-        if (created == null) {
-            return Response.status(HttpStatus.CONFLICT.value())
-                    .build();
-        }
         return Response.status(HttpStatus.OK.value())
                 .entity(created)
                 .build();
