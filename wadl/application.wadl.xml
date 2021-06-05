@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://wadl.dev.java.net/2009/02">
+    <doc xmlns:jersey="http://jersey.java.net/" jersey:generatedBy="Jersey: 2.30.1 2020-02-21 08:10:47"/>
+    <doc xmlns:jersey="http://jersey.java.net/" jersey:hint="This is simplified WADL with user and core resources only. To get full WADL with extended resources use the query parameter detail. Link: https://localhost:8443/application.wadl?detail=true"/>
+    <grammars>
+        <include href="application.wadl/xsd0.xsd">
+            <doc title="Generated" xml:lang="en"/>
+        </include>
+    </grammars>
+    <resources base="https://localhost:8443/">
+        <resource path="/event">
+            <method id="getEventsByWeekOrDate" name="GET">
+                <request>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="week" style="query" type="xs:int"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="date" style="query" type="xs:string"/>
+                </request>
+                <response>
+                    <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="event" mediaType="application/json"/>
+                </response>
+            </method>
+            <method id="createEvent" name="POST">
+                <request>
+                    <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="event" mediaType="application/json"/>
+                </request>
+                <response>
+                    <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="event" mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{eventId}/ratings">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="eventId" style="template" type="xs:string"/>
+                <method id="getEventRatings" name="GET">
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/all">
+                <method id="getAll" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="event" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{eventId}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="eventId" style="template" type="xs:string"/>
+                <method id="getById" name="GET">
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+                <method id="updateEvent" name="PUT">
+                    <request>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="event" mediaType="application/json"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+                <method id="deleteEvent" name="DELETE">
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/to-pdf">
+                <method id="generateEventsListPDF" name="GET">
+                    <response>
+                        <representation mediaType="application/pdf"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{eventId}/rating">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="eventId" style="template" type="xs:string"/>
+                <method id="getAvgRating" name="GET">
+                    <request>
+                        <representation mediaType="application/json"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+                <method id="createEventRating" name="POST">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="userId" style="header" type="xs:string"/>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="rating" mediaType="application/json"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{eventId}/rating/{userId}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="eventId" style="template" type="xs:string"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="userId" style="template" type="xs:string"/>
+                <method id="getUserRating" name="GET">
+                    <request>
+                        <representation mediaType="application/json"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/user">
+            <resource path="/login">
+                <method id="login" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="userId" style="header" type="xs:string"/>
+                    </request>
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="user" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/register">
+                <method id="register" name="POST">
+                    <request>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="user" mediaType="application/json"/>
+                    </request>
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="user" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+    </resources>
+</application>

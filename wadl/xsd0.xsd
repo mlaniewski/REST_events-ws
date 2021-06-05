@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="event" type="event"/>
+
+  <xs:element name="rating" type="rating"/>
+
+  <xs:element name="user" type="user"/>
+
+  <xs:complexType name="event">
+    <xs:sequence>
+      <xs:element name="date" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="econst" type="xs:string" minOccurs="0"/>
+      <xs:element name="links" type="link" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="month" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="type" type="type" minOccurs="0"/>
+      <xs:element name="week" type="xs:int"/>
+      <xs:element name="year" type="xs:int"/>
+      <xs:element name="_id" type="objectId" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="link">
+    <xs:sequence>
+      <xs:element name="link" type="xs:string" minOccurs="0"/>
+      <xs:element name="rel" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="objectId" final="extension restriction">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="rating">
+    <xs:sequence>
+      <xs:element name="eventId" type="xs:string" minOccurs="0"/>
+      <xs:element name="rating" type="xs:double" minOccurs="0"/>
+      <xs:element name="userId" type="xs:string" minOccurs="0"/>
+      <xs:element name="_id" type="objectId" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="admin" type="xs:boolean"/>
+      <xs:element name="password" type="xs:string" minOccurs="0"/>
+      <xs:element name="uconst" type="xs:string" minOccurs="0"/>
+      <xs:element name="username" type="xs:string" minOccurs="0"/>
+      <xs:element name="_id" type="objectId" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SPORT"/>
+      <xs:enumeration value="CULTURAL"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

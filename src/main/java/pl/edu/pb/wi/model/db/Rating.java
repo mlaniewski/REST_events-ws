@@ -5,7 +5,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 @Document(collection = "Rating")
+@XmlRootElement
 public class Rating {
     @Id
     @BsonProperty(value = "_id")

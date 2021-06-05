@@ -7,11 +7,13 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.edu.pb.wi.model.Link;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Document(collection = "Event")
+@XmlRootElement
 public class Event {
 
     public enum Type {
