@@ -10,4 +10,6 @@ public interface RatingService {
     Rating createRating(Rating rating);
 
     Double getAvgRating(String eventId);
+
+    Double getUserRating(String eventId, String userId);
 }

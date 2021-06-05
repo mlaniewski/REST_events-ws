@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import pl.edu.pb.wi.model.db.Event;
 import pl.edu.pb.wi.model.db.Rating;
+import pl.edu.pb.wi.model.db.User;
 import pl.edu.pb.wi.service.EventService;
 import pl.edu.pb.wi.service.PDFCreator;
 import pl.edu.pb.wi.service.RatingService;
+import pl.edu.pb.wi.service.UserService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -21,6 +23,9 @@ public class EventResource {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RatingService ratingService;
@@ -195,6 +200,30 @@ public class EventResource {
         Double avgRating = ratingService.getAvgRating(eventId);
         return Response.status(HttpStatus.OK.value())
                 .entity(avgRating)
+                .build();
+    }
+
+    @GET
+    @Path("/{eventId}/rating/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserRating(@PathParam("eventId") String eventId,
+                                  @PathParam("userId") String userId) {
+        Event event = eventService.getById(eventId);
+        if (event == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        User user = userService.findUserByUconst(userId);
+        if (user == null) {
+            return Response.status(HttpStatus.NOT_FOUND.value())
+                    .entity(String.format("User('%s') nie zostal znaleziony", eventId))
+                    .build();
+        }
+        Double rating = ratingService.getUserRating(eventId, userId);
+        return Response.status(HttpStatus.OK.value())
+                .entity(rating)
                 .build();
     }
 }

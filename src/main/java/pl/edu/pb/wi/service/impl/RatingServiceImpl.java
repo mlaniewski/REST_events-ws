@@ -48,4 +48,10 @@ public class RatingServiceImpl implements RatingService {
         AggregationResults<AvgRatingResult> result = mongoTemplate.aggregate(aggregation, "Rating", AvgRatingResult.class);
         return result.getMappedResults().get(0).getAvgRating();
     }
+
+
+    @Override
+    public Double getUserRating(String eventId, String userId) {
+        return ratingRepository.findByUserIdAndEventId(userId, eventId).get().getRating();
+    }
 }
