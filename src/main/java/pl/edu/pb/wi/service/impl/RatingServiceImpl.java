@@ -46,7 +46,10 @@ public class RatingServiceImpl implements RatingService {
             Aggregation.group("eventId").avg("rating").as("avgRating"));
 
         AggregationResults<AvgRatingResult> result = mongoTemplate.aggregate(aggregation, "Rating", AvgRatingResult.class);
-        return result.getMappedResults().get(0).getAvgRating();
+        if (result.getMappedResults().size() > 0) {
+            return result.getMappedResults().get(0).getAvgRating();
+        }
+        return null;
     }
 
 
