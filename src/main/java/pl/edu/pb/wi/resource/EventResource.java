@@ -139,11 +139,11 @@ public class EventResource {
 
     @GET
     @Path("/to-pdf")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces(org.springframework.http.MediaType.APPLICATION_PDF_VALUE)
     public Response generateEventsListPDF() {
         List<Event> eventList = eventService.getAll();
         File pdf = pdfCreator.create(eventList);
-        Response.ResponseBuilder response = Response.ok(pdf, MediaType.APPLICATION_OCTET_STREAM);
+        Response.ResponseBuilder response = Response.ok(pdf, org.springframework.http.MediaType.APPLICATION_PDF_VALUE);
         response.header("Content-Disposition", String.format("attachment; filename=\"%s\"", pdf.getName()));
         return response.build();
     }
