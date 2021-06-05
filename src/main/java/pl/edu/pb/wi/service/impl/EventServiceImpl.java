@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
     public Event create(Event event) {
         long count = eventRepository.count();
         event.setEconst(String.format("ev%d", count));
-        event.setDate(new Date(event.getDate().getTime() + 2*60*1000));
+        event.setDate(new Date(event.getDate().getTime() + 2*60*60*1000));
         return eventRepository.save(event);
     }
 
@@ -42,7 +42,7 @@ public class EventServiceImpl implements EventService {
             return null;
         }
 
-        found.setDate(event.getDate());
+        found.setDate(new Date(event.getDate().getTime() + 2*60*60*1000));
         found.setDescription(event.getDescription());
         found.setName(event.getName());
         found.setType(event.getType());
