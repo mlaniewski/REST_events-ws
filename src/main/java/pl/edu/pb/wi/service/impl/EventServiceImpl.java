@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class EventServiceImpl implements EventService {
@@ -29,8 +30,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event create(Event event) {
-        long count = eventRepository.count();
-        event.setEconst(String.format("ev%d", count));
+        event.setEconst(String.format("event-%s", UUID.randomUUID().toString()));
         event.setDate(new Date(event.getDate().getTime() + 2*60*60*1000));
         return eventRepository.save(event);
     }

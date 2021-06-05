@@ -26,7 +26,9 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
         if (uriInfo.getPath().equals("user/register") ||
                 uriInfo.getPath().equals("event/all") ||
                 uriInfo.getPath().equals("event") ||
-                (uriInfo.getPath().matches("event/.+/rating") && requestContext.getMethod().equals(HttpMethod.GET))) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow i przy filtrach
+                (uriInfo.getPath().matches("event/.+/rating") && requestContext.getMethod().equals(HttpMethod.GET)) ||
+                !uriInfo.getPath().startsWith("event") ||
+                !uriInfo.getPath().startsWith("user")) { //filtr nie jest wymagany przy rejestracji, przy pobieraniu wszystkich eventow i przy filtrach
             return;
         }
         final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);

@@ -52,6 +52,7 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Double getUserRating(String eventId, String userId) {
-        return ratingRepository.findByUserIdAndEventId(userId, eventId).get().getRating();
+        Optional<Rating> optionalRating = ratingRepository.findByUserIdAndEventId(userId, eventId);
+        return optionalRating.map(Rating::getRating).orElse(null);
     }
 }

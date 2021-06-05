@@ -6,6 +6,8 @@ import pl.edu.pb.wi.model.db.User;
 import pl.edu.pb.wi.repository.UserRepository;
 import pl.edu.pb.wi.service.UserService;
 
+import java.util.UUID;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,10 +21,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUconst(uconst).orElse(null);
     }
 
+
     @Override
     public User register(User user) {
-        long count = userRepository.count();
-        user.setUconst(String.format("us%d", count));
+        user.setUconst(String.format("user-%s", UUID.randomUUID().toString()));
         return userRepository.save(user);
     }
 
