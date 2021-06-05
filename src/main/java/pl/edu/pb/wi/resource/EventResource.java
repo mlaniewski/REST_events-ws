@@ -44,6 +44,7 @@ public class EventResource {
     @Path("/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("eventId") String eventId,
+                            @HeaderParam("userId") String userId,
                             @Context UriInfo uriInfo) {
         Event event = eventService.getById(eventId);
         if (event == null) {
@@ -65,6 +66,21 @@ public class EventResource {
                 .build()
                 .toString();
         event.addLink(uri2, "ratings");
+
+        String uri3 = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class, "getAvgRating")
+                .resolveTemplate("eventId", event.getEconst())
+                .build()
+                .toString();
+        event.addLink(uri3, "avgRating");
+
+        String uri4 = uriInfo.getBaseUriBuilder()
+                .path(EventResource.class, "getUserRating")
+                .resolveTemplate("eventId", event.getEconst())
+                .resolveTemplate("userId", userId)
+                .build()
+                .toString();
+        event.addLink(uri4, "userRating");
 
         return Response.status(HttpStatus.OK.value())
                 .entity(event)
@@ -91,20 +107,6 @@ public class EventResource {
                     .entity(String.format("Event('%s') nie zostal znaleziony", eventId))
                     .build();
         }
-
-        String uri = uriInfo.getBaseUriBuilder()
-                .path(EventResource.class)
-                .path(String.valueOf(event.getEconst()))
-                .build()
-                .toString();
-        event.addLink(uri, "self");
-
-        String uri2 = uriInfo.getBaseUriBuilder()
-                .path(EventResource.class, "getEventRatings")
-                .resolveTemplate("eventId", event.getEconst())
-                .build()
-                .toString();
-        event.addLink(uri2, "ratings");
 
         return Response.status(HttpStatus.OK.value())
                 .entity(event)
